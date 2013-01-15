@@ -25,3 +25,21 @@ License
 
 This lib is released under BSD License.
 
+Example
+-------
+
+	#include <libmove/libmove.h>
+	int main(s32 argc, const char* argv[]){
+		movePadData data;
+		init_move();
+		while(1){
+			getMovePadData(&data);
+			if(data.BTN_ACTION)
+				calibrate_move();
+			}else if(data.BTN_T){
+				goto end;
+			}
+		}
+	end:
+		end_move();	
+	}
