@@ -44,9 +44,9 @@ Example
 		movePadData data;
 		init_move();
 		while(1){
-			getMovePadData(&data);
+			getMovePadData(PLAYSTATION_MOVE_PAD_0 , &data);
 			if(data.BTN_ACTION)
-				calibrate_move();
+				calibrate_move(PLAYSTATION_MOVE_PAD_0);
 			}else if(data.BTN_T){
 				goto end;
 			}
