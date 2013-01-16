@@ -5,8 +5,8 @@
 #---------------------------------------------------------------------------------
 all:
 	@$(MAKE) -C libmove --no-print-directory
-	@$(MAKE) -C sample/libmove-NoRSX pkg --no-print-directory
+	@$(MAKE) -C sample/libmove-NoRSX-example pkg --no-print-directory
 
 clean:
 	@$(MAKE) -C libmove clean --no-print-directory
-	@$(MAKE) -C sample/libmove-NoRSX clean --no-print-directory
+	@$(MAKE) -C sample/llibmove-NoRSX-example clean --no-print-directory
