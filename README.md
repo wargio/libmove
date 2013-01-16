@@ -11,9 +11,18 @@ Authors
 
 Changelog:
 ----------
+* 0.3
+
+	Now is possible to choose the move controller to use.
+	Added move_set_rumble/move_get_rumble function
+	Added set_move_led_color to force the ball color of the PS Move
+
 * 0.2
+
 	fixed gyro axis
+	
 * 0.1
+
 	initial release
 	
 Linking

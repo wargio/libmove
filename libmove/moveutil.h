@@ -31,10 +31,13 @@ static inline float vec_array(vec_float4 vec, unsigned int idx)
      return -1;
    return v.array[idx];
 }
-
+/*
+ pad numbers goes starts from 0 to 7? ; where 0 is the first ps move controller connected to the ps3.
+*/
 moveContext *initMove();
 void         endMove(moveContext *context);
 int          processMove(moveContext *context);
+int          processMove(moveContext *context, int pad_number);
 void         moveGet3DPosition(moveContext *context, float *x, float *y, float *z);
 
 #endif /* __MOVEUTIL_H__ */

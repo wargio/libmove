@@ -1,7 +1,7 @@
 #include <libmove/libmove.h>
 
-static int _camera_loaded = 0;
-static int _gem_loaded = 0;
+static int _camera_loaded = LIBMOVE_ERROR;
+static int _gem_loaded    = LIBMOVE_ERROR;
 
 static moveContext *move_context = NULL;
 
@@ -12,12 +12,12 @@ int init_move(){
 	if (!_camera_loaded)
 		ret = sysModuleLoad (SYSMODULE_CAMERA);
 	else
-		ret = 0;
-	if (ret == 0){
+		ret = LIBMOVE_OK;
+	if (ret == LIBMOVE_OK){
 		_gem_loaded = !sysModuleIsLoaded (SYSMODULE_GEM);
 		if (!_gem_loaded)
 			ret = sysModuleLoad (SYSMODULE_GEM);
-		if (ret == 0){
+		if (ret == LIBMOVE_OK){
 			move_context = initMove();
 		}
 		else {
@@ -34,18 +34,26 @@ int end_move(){
 	        move_context = NULL;
 	        sysModuleUnload (SYSMODULE_CAMERA);
 		sysModuleUnload (SYSMODULE_GEM);
-		return 1;
+		return LIBMOVE_OK;
 	}
-	return 0;
+	return LIBMOVE_ERROR;
 }
 
-void get_3d_position(float *x, float *y, float *z){
-	processMove(move_context);
+int camera_is_loaded(){
+	return _camera_loaded;
+}
+
+int move_is_loaded(){
+	return _gem_loaded;
+}
+
+void get_3d_position(int pad_number, float *x, float *y, float *z){
+	processMove(move_context, pad_number);
 	moveGet3DPosition(move_context, x, y, z);
 }
 
-void get_gyro_position(float *x, float *y, float *z){
-	processMove (move_context);
+void get_gyro_position(int pad_number, float *x, float *y, float *z){
+	processMove (move_context, pad_number);
 	gemInertialState gem_inert;
         gemGetInertialState (0, 0, 0, &gem_inert);
         *z = -vec_array (gem_inert.gyro, 2) *25;
@@ -53,8 +61,8 @@ void get_gyro_position(float *x, float *y, float *z){
         *y = -vec_array (gem_inert.gyro, 0) *25;
 }
 
-void getMovePadData(movePadData *data){
-	processMove (move_context);
+void getMovePadData(int pad_number, movePadData *data){
+	processMove (move_context, pad_number);
 	data->BTN_SELECT   = (move_context->state.paddata.buttons & 0x1);
 	data->BTN_T        = (move_context->state.paddata.buttons & 0x2);
 	data->BTN_ACTION   = (move_context->state.paddata.buttons & 0x4);
@@ -66,6 +74,24 @@ void getMovePadData(movePadData *data){
 	data->ANA_T        =  move_context->state.paddata.ANA_T;
 }
 
-void calibrate_move(){
-	gemCalibrate (0);
+void set_move_led_color(int pad_number, f32 red, f32 green, f32 blue){
+	gemForceRGB(pad_number, red, green, blue);
+}
+
+int move_reset(int pad_number){
+	return gemReset(pad_number);
+}
+
+void calibrate_move(int pad_number){
+	gemCalibrate(pad_number);
+}
+
+void move_set_rumble(int pad_number, u8 intensity){
+	gemSetRumble(pad_number,  intensity);
+}
+
+u8 move_get_rumble(int pad_number){
+	u8 intensity;
+	gemGetRumble(pad_number, &intensity);
+	return intensity;
 }

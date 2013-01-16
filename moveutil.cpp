@@ -191,8 +191,43 @@ void endMove(moveContext *context)
     free (context);
 }
 
-int
-processMove(moveContext *context)
+
+int processMove(moveContext *context, int pad_number)
+{
+   const unsigned int hues[] = { 4 << 24, 4 << 24, 4 << 24, 4 << 24 };
+   int ret = -1;
+
+   if (readCamera (context) > 0)
+     {
+        ret = gemUpdateStart ((const void*)context->camRead.buffer, context->camRead.timestamp);
+        //printf ("Return from gemUpdateStart %X\n", ret);
+        if (ret == 0)
+          {
+             ret = gemUpdateFinish ();
+             //printf ("Return from gemUpdateFinish %X\n", ret);
+             if (ret == 0)
+               {
+                  ret = gemGetState (pad_number, STATE_LATEST_IMAGE_TIME, 0, &context->state);
+                  switch (ret) {
+                     case 2:
+                       gemForceRGB (pad_number, 0.5, 0.5, 0.5);
+                       break;
+
+                     case 5:
+                       gemTrackHues (hues, NULL);
+                       break;
+
+                     default:
+                       break;
+                    }
+               }
+          }
+     }
+
+   return ret;
+}
+
+int processMove(moveContext *context)
 {
    const unsigned int hues[] = { 4 << 24, 4 << 24, 4 << 24, 4 << 24 };
    int ret = -1;
