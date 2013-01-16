@@ -11,6 +11,8 @@ Authors
 
 Changelog:
 ----------
+* 0.2
+	fixed gyro axis
 * 0.1
 	initial release
 	

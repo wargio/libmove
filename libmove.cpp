@@ -45,21 +45,12 @@ void get_3d_position(float *x, float *y, float *z){
 }
 
 void get_gyro_position(float *x, float *y, float *z){
-	/* Check move events */
 	processMove (move_context);
-	float x1, y1, z1;
 	gemInertialState gem_inert;
         gemGetInertialState (0, 0, 0, &gem_inert);
-        z1 = -vec_array (gem_inert.gyro, 2) * 25;
-        x1 = -vec_array (gem_inert.gyro, 1) * 25;
-        y1 = -vec_array (gem_inert.gyro, 0) * 25;
-        
-	if(abs(x1) > 2)
-		*x=x1;
-	if(abs(y1) > 2)
-		*y=y1;
-	if(abs(z1) > 2)
-		*z=z1;
+        *z = -vec_array (gem_inert.gyro, 2) *25;
+        *x = -vec_array (gem_inert.gyro, 1) *25;
+        *y = -vec_array (gem_inert.gyro, 0) *25;
 }
 
 void getMovePadData(movePadData *data){
