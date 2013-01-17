@@ -25,6 +25,10 @@ int init_move(){
 				sysModuleUnload (SYSMODULE_CAMERA);
 		}
 	}
+	
+	if(move_context == NULL)
+		return LIBMOVE_ERROR;
+	
 	return ret;
 }
 
