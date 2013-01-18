@@ -79,7 +79,8 @@ void getMovePadData(int pad_number, movePadData *data){
 }
 
 void set_move_led_color(int pad_number, f32 red, f32 green, f32 blue){
-	gemForceRGB(pad_number, red, green, blue);
+	gemReset(pad_number);
+	processMove(move_context, pad_number, red, green, blue);
 }
 
 int move_reset(int pad_number){

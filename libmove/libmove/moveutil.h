@@ -36,7 +36,7 @@ static inline float vec_array(vec_float4 vec, unsigned int idx)
 */
 moveContext *initMove();
 void         endMove(moveContext *context);
-int          processMove(moveContext *context);
+int          processMove(moveContext *context, int pad_number, f32 red, f32 green, f32 blue);
 int          processMove(moveContext *context, int pad_number);
 void         moveGet3DPosition(moveContext *context, float *x, float *y, float *z);
 

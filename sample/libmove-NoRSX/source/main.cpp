@@ -33,6 +33,8 @@ s32 main(s32 argc, const char* argv[])
 
 	init_move();
 
+	set_move_led_color(PLAYSTATION_MOVE_PAD_0, 0.5, 0, 0);
+
 	NoRSX *GFX = new NoRSX(RESOLUTION_1920x1080); //set defined screen resolution You can change it to:
 						      //RESOLUTION_720x480 | RESOLUTION_720x576 | RESOLUTION_1280x720 | RESOLUTION_1920x1080
 	Image IMG(GFX);
@@ -63,6 +65,7 @@ s32 main(s32 argc, const char* argv[])
 	y=GFX->height*0.5-y1;
 	z=-z1;
 
+
 	while(GFX->GetAppStatus()){
 		static time_t starttime = 0;
 		double fps = 0;
@@ -82,6 +85,7 @@ s32 main(s32 argc, const char* argv[])
 		
 		if(data.BTN_ACTION){
 			calibrate_move(PLAYSTATION_MOVE_PAD_0);
+			set_move_led_color(PLAYSTATION_MOVE_PAD_0, 0.5, 0, 0);
 			get_gyro_position(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
 			x=GFX->width*0.5-x1;
 			y=GFX->height*0.5-y1;

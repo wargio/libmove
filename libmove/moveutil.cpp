@@ -15,6 +15,8 @@ u16 oldGemPad = 0;
 u16 newGemPad = 0;
 u16 newGemAnalogT = 0;
 
+static f32 _red = 0.5, _green = 0.5, _blue = 0.5;
+
 static void endCamera(moveContext *context)
 {
    cameraStop (0);
@@ -210,7 +212,7 @@ int processMove(moveContext *context, int pad_number)
                   ret = gemGetState (pad_number, STATE_LATEST_IMAGE_TIME, 0, &context->state);
                   switch (ret) {
                      case 2:
-                       gemForceRGB (pad_number, 0.5, 0.5, 0.5);
+                       gemForceRGB (pad_number, _red, _green, _blue);
                        break;
 
                      case 5:
@@ -227,8 +229,11 @@ int processMove(moveContext *context, int pad_number)
    return ret;
 }
 
-int processMove(moveContext *context)
-{
+int processMove(moveContext *context, int pad_number, f32 red, f32 green, f32 blue){
+   _red = red;
+   _green = green;
+   _blue = blue;
+
    const unsigned int hues[] = { 4 << 24, 4 << 24, 4 << 24, 4 << 24 };
    int ret = -1;
 
@@ -242,10 +247,10 @@ int processMove(moveContext *context)
              //printf ("Return from gemUpdateFinish %X\n", ret);
              if (ret == 0)
                {
-                  ret = gemGetState (0, STATE_LATEST_IMAGE_TIME, 0, &context->state);
+                  ret = gemGetState (pad_number, STATE_LATEST_IMAGE_TIME, 0, &context->state);
                   switch (ret) {
                      case 2:
-                       gemForceRGB (0, 0.5, 0.5, 0.5);
+                       gemForceRGB(pad_number, red, green, blue);
                        break;
 
                      case 5:
