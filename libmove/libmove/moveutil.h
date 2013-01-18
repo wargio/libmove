@@ -1,6 +1,7 @@
 /*
  * Copyright (C) Antonio José Ramos Márquez (bigboss)
  * Copyright (C) Youness Alaoui (KaKaRoTo)
+ * Copyright (C) 2013, Giovanni Dante Grazioli (deroad)
  */
 
 #ifndef __LIBMOVE_MOVEUTIL_H__

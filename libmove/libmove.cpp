@@ -5,8 +5,7 @@ static int _gem_loaded    = LIBMOVE_ERROR;
 
 static moveContext *move_context = NULL;
 
-
-int init_move(){
+int initLibMove(){
 	int ret;
 	_camera_loaded = !sysModuleIsLoaded (SYSMODULE_CAMERA);
 	if (!_camera_loaded)
@@ -32,7 +31,7 @@ int init_move(){
 	return ret;
 }
 
-int end_move(){
+int endLibMove(){
 	if (move_context){
 	        endMove (move_context);
 	        move_context = NULL;
@@ -43,20 +42,20 @@ int end_move(){
 	return LIBMOVE_ERROR;
 }
 
-int camera_is_loaded(){
+int cameraIsLoaded(){
 	return _camera_loaded;
 }
 
-int move_is_loaded(){
+int moveIsLoaded(){
 	return _gem_loaded;
 }
 
-void get_3d_position(int pad_number, float *x, float *y, float *z){
+void get3DPosition(int pad_number, float *x, float *y, float *z){
 	processMove(move_context, pad_number);
 	moveGet3DPosition(move_context, x, y, z);
 }
 
-void get_gyro_position(int pad_number, float *x, float *y, float *z){
+void getGyroPosition(int pad_number, float *x, float *y, float *z){
 	processMove (move_context, pad_number);
 	gemInertialState gem_inert;
         gemGetInertialState (0, 0, 0, &gem_inert);
@@ -78,24 +77,24 @@ void getMovePadData(int pad_number, movePadData *data){
 	data->ANA_T        =  move_context->state.paddata.ANA_T;
 }
 
-void set_move_led_color(int pad_number, f32 red, f32 green, f32 blue){
+void setMoveLedColor(int pad_number, f32 red, f32 green, f32 blue){
 	gemReset(pad_number);
 	processMove(move_context, pad_number, red, green, blue);
 }
 
-int move_reset(int pad_number){
+int moveReset(int pad_number){
 	return gemReset(pad_number);
 }
 
-void calibrate_move(int pad_number){
+void calibrateMove(int pad_number){
 	gemCalibrate(pad_number);
 }
 
-void move_set_rumble(int pad_number, u8 intensity){
+void moveSetRumble(int pad_number, u8 intensity){
 	gemSetRumble(pad_number,  intensity);
 }
 
-u8 move_get_rumble(int pad_number){
+u8 moveGetRumble(int pad_number){
 	u8 intensity;
 	gemGetRumble(pad_number, &intensity);
 	return intensity;

@@ -31,9 +31,9 @@ s32 main(s32 argc, const char* argv[])
 	padData paddata;
 	ioPadInit(7);
 
-	init_move();
+	initLibMove();
 
-	set_move_led_color(PLAYSTATION_MOVE_PAD_0, 0.5, 0, 0);
+	setMoveLedColor(PLAYSTATION_MOVE_PAD_0, 0.5, 0, 0);
 
 	NoRSX *GFX = new NoRSX(RESOLUTION_1920x1080); //set defined screen resolution You can change it to:
 						      //RESOLUTION_720x480 | RESOLUTION_720x576 | RESOLUTION_1280x720 | RESOLUTION_1920x1080
@@ -55,22 +55,17 @@ s32 main(s32 argc, const char* argv[])
 	F1.PrintfToBitmap(150,400,&Precalculated_Layer,COLOR_YELLOW, 35,"Press start to exit! (move)");
 
 	GFX->AppStart();
-	int frame=0;
 	float x=GFX->width*0.5,y=GFX->height*0.5,z=0;
 	float x1=0,y1=0,z1=0;
 	movePadData data;
 
-	get_gyro_position(PLAYSTATION_MOVE_PAD_0,&x1,&y1,&z1);
+	getGyroPosition(PLAYSTATION_MOVE_PAD_0,&x1,&y1,&z1);
 	x=GFX->width*0.5-x1;
 	y=GFX->height*0.5-y1;
 	z=-z1;
 
 
 	while(GFX->GetAppStatus()){
-		static time_t starttime = 0;
-		double fps = 0;
-		if (starttime == 0) starttime = time (NULL);
-		else fps = frame / difftime (time (NULL), starttime);
 		BMap.DrawBitmap(&Precalculated_Layer);
 
 		getMovePadData(PLAYSTATION_MOVE_PAD_0, &data);
@@ -84,17 +79,17 @@ s32 main(s32 argc, const char* argv[])
 		}
 		
 		if(data.BTN_ACTION){
-			calibrate_move(PLAYSTATION_MOVE_PAD_0);
-			set_move_led_color(PLAYSTATION_MOVE_PAD_0, 0.5, 0, 0);
-			get_gyro_position(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
+			calibrateMove(PLAYSTATION_MOVE_PAD_0);
+			setMoveLedColor(PLAYSTATION_MOVE_PAD_0, 0.5, 0, 0);
+			getGyroPosition(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
 			x=GFX->width*0.5-x1;
 			y=GFX->height*0.5-y1;
 			z=-z1;
 		}
-		get_3d_position(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
+		get3DPosition(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
 		F1.Printf(150,200,COLOR_WHITE,30,"3D: x %.2f, y %.2f, z %.2f",x1,y1,z1);
 		
-		get_gyro_position(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
+		getGyroPosition(PLAYSTATION_MOVE_PAD_0, &x1, &y1, &z1);
 		F1.Printf(150,300,COLOR_WHITE,30,"Gyro: x %.2f, y %.2f, z %.2f",x1,y1,z1);
 
 
@@ -111,7 +106,6 @@ s32 main(s32 argc, const char* argv[])
 		else if(y<0) y = 0;
 		
 
-		F1.Printf(150,100,COLOR_RED,60,"FPS %f", fps);
 		if(data.BTN_CROSS)
 			F1.Printf(150,150,COLOR_RED,60,"BTN_CROSS");
 		if(data.BTN_CIRCLE)
@@ -136,13 +130,12 @@ s32 main(s32 argc, const char* argv[])
 		F1.Printf(150,250,COLOR_WHITE,30,"Trigger T 0x%04x",data.ANA_T);
 		OBJ.Rectangle(x-5, y-5 , 10, 10, COLOR_WHITE);
 		GFX->Flip();
-		move_set_rumble(PLAYSTATION_MOVE_PAD_0, (u8)data.ANA_T);
-		frame ++;
+		moveSetRumble(PLAYSTATION_MOVE_PAD_0, (u8)data.ANA_T);
 	}
 end:
 	//You need to clean the Bitmap before exit
 	BMap.ClearBitmap(&Precalculated_Layer);
-	end_move();
+	endLibMove();
 	GFX->NoRSX_Exit();
 	ioPadEnd();
 	return 0;

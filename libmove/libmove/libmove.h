@@ -15,30 +15,35 @@
 #define	PLAYSTATION_MOVE_PAD_0 		0
 #define	PLAYSTATION_MOVE_PAD_1 		1
 #define	PLAYSTATION_MOVE_PAD_2 		2
+#define	PLAYSTATION_MOVE_PAD_3 		3
+#define	PLAYSTATION_MOVE_PAD_4 		4
+#define	PLAYSTATION_MOVE_PAD_5 		5
+#define	PLAYSTATION_MOVE_PAD_6 		6
+#define	PLAYSTATION_MOVE_PAD_7 		7
 
 /*
  * This function initialize lib move. to use this, you need an EyeToy or a PS Eye, and a PS Move.
  * Return LIBMOVE_OK if nothing went wrong.
  */
-int  init_move();
+int  initLibMove();
 
 /*
  * This function terminate lib move.
  * Return LIBMOVE_OK if nothing went wrong.
  */
-int  end_move();
+int  endLibMove();
 
 /*
  * This function return the camera status.
  * Return LIBMOVE_OK if everything is fine.
  */
-int  camera_is_loaded();
+int  cameraIsLoaded();
 
 /*
  * This function return the gem status.
  * Return LIBMOVE_OK if everything is fine.
  */
-int  move_is_loaded();
+int  moveIsLoaded();
 
 /*
  * This function get the PS Move 3D Position value
@@ -47,7 +52,7 @@ int  move_is_loaded();
  *        get_3d_position( PLAYSTATION_MOVE_PAD_0 , &x, &y, &z );
  */
 
-void get_3d_position(int pad_number, float *x, float *y, float *z);
+void get3DPosition(int pad_number, float *x, float *y, float *z);
 
 /*
  * This function get the PS Move Gyroscopic value
@@ -56,7 +61,7 @@ void get_3d_position(int pad_number, float *x, float *y, float *z);
  *        get_gyro_position( PLAYSTATION_MOVE_PAD_0 , &x, &y, &z );
  */
 
-void get_gyro_position(int pad_number, float *x, float *y, float *z);
+void getGyroPosition(int pad_number, float *x, float *y, float *z);
 
 /*
  * This function get the PS Move Buttons
@@ -70,23 +75,23 @@ void getMovePadData(int pad_number, movePadData *data);
  * an example: set_move_led_color( PLAYSTATION_MOVE_PAD_0 , 0.5, 0.5, 0.5 );
  */
  
-void set_move_led_color(int pad_number, f32 red, f32 green, f32 blue);
+void setMoveLedColor(int pad_number, f32 red, f32 green, f32 blue);
 
 /*
  * This function should reset the PS Move
  */
-int  move_reset(int pad_number);
+int  moveReset(int pad_number);
 
 /*
  * This function recalibrate the PS Move
  */
-void calibrate_move(int pad_number);
+void calibrateMove(int pad_number);
 
 /*
  * These functions set and get the Rumble intensity of the PS Move
  */
-void move_set_rumble(int pad_number, u8 intensity);
-u8   move_get_rumble(int pad_number);
+void moveSetRumble(int pad_number, u8 intensity);
+u8   moveGetRumble(int pad_number);
 
 #endif
 
